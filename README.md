@@ -64,7 +64,43 @@ Prebuilt binaries are available on the GitHub Releases page:
 - https://github.com/dinesh-kumar90/loadster-go/releases
 
 Download the asset matching your OS/architecture and run it directly.
-Releases are built automatically by GitHub Actions when you push a tag like `v1.0.0`.
+
+### Install From Binary (No Go Required)
+
+1. Open the Releases page and download the correct file for your OS/CPU.
+2. Rename it to `loadster` (or `loadster.exe` on Windows).
+3. Run it from your terminal.
+
+Common assets:
+- Linux x86_64: `loadster-vX.Y.Z-linux-amd64`
+- Linux ARM64: `loadster-vX.Y.Z-linux-arm64`
+- macOS Intel: `loadster-vX.Y.Z-darwin-amd64`
+- macOS Apple Silicon: `loadster-vX.Y.Z-darwin-arm64`
+- Windows x86_64: `loadster-vX.Y.Z-windows-amd64.exe`
+- Windows ARM64: `loadster-vX.Y.Z-windows-arm64.exe`
+
+Linux/macOS example:
+
+```bash
+chmod +x loadster-v0.1.0-darwin-arm64
+mv loadster-v0.1.0-darwin-arm64 loadster
+./loadster -url=http://localhost:8080 -users=100 -duration=10s
+```
+
+Optional (global command on Linux/macOS):
+
+```bash
+chmod +x loadster-v0.1.0-darwin-arm64
+sudo mv loadster-v0.1.0-darwin-arm64 /usr/local/bin/loadster
+loadster -url=http://localhost:8080 -users=100 -duration=10s
+```
+
+Windows PowerShell example:
+
+```powershell
+Rename-Item .\loadster-v0.1.0-windows-amd64.exe loadster.exe
+.\loadster.exe -url=http://localhost:8080 -users=100 -duration=10s
+```
 
 ## Usage
 
