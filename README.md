@@ -17,6 +17,8 @@ I built this project to explore practical performance engineering in Go:
 - Concurrent virtual users (`-users`)
 - Time-bound test runs (`-duration`)
 - HTTP method selection (`-method`)
+- Custom request body support (`-body`)
+- Custom request headers (`-header "Key: Value"`; repeatable)
 - Optional global rate limiting (`-rps`)
 - Worker ramp-up controls (`-ramp-step`, `-ramp-interval`)
 - Shared and tuned HTTP client/transport for better connection reuse
@@ -67,6 +69,8 @@ go build -o loadster .
 - `-users` int (default: `10`): Number of concurrent workers
 - `-duration` duration (default: `10s`): Total test duration
 - `-method` string (default: `GET`): HTTP method
+- `-body` string (default: empty): Request body payload
+- `-header` string (repeatable): Custom header in `Key: Value` format
 - `-rps` int (default: `0`): Target global requests/second (`0` = unthrottled)
 - `-ramp-step` int (default: `100`): Workers started per ramp batch
 - `-ramp-interval` duration (default: `50ms`): Delay between ramp batches
@@ -83,6 +87,20 @@ RPS-controlled test:
 
 ```bash
 ./loadster -url=http://localhost:8080 -users=2000 -duration=45s -rps=10000
+```
+
+POST with JSON body and headers:
+
+```bash
+./loadster \
+  -url=http://localhost:8080/api/orders \
+  -method=POST \
+  -body='{\"item\":\"book\",\"qty\":2}' \
+  -header='Content-Type: application/json' \
+  -header='Authorization: Bearer test-token' \
+  -users=500 \
+  -duration=30s \
+  -rps=2000
 ```
 
 Large-user test with gradual ramp-up:
@@ -122,7 +140,6 @@ Latency:
 
 ## Roadmap
 
-- Request body and custom headers support
 - Status-code distribution reporting
 - JSON/CSV output mode
 - Distributed load generation mode

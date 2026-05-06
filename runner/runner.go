@@ -12,6 +12,8 @@ type Config struct {
 	Users        int
 	Duration     time.Duration
 	Method       string
+	Body         string
+	Headers      http.Header
 	RPS          int
 	RampStep     int
 	RampInterval time.Duration
@@ -46,7 +48,7 @@ func Run(cfg Config) {
 
 		for i := 0; i < batch; i++ {
 			wg.Add(1)
-			go Worker(cfg.URL, cfg.Method, end, client, pacer, results, &wg)
+			go Worker(cfg.URL, cfg.Method, cfg.Body, cfg.Headers, end, client, pacer, results, &wg)
 		}
 		started += batch
 

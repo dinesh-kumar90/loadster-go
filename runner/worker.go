@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"bytes"
 	"net/http"
 	"sync"
 	"time"
@@ -11,7 +12,7 @@ type Result struct {
 	Success bool
 }
 
-func Worker(url string, method string, end time.Time, client *http.Client, pacer *Pacer, results chan<- Result, wg *sync.WaitGroup) {
+func Worker(url string, method string, body string, headers http.Header, end time.Time, client *http.Client, pacer *Pacer, results chan<- Result, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for time.Now().Before(end) {
@@ -21,7 +22,16 @@ func Worker(url string, method string, end time.Time, client *http.Client, pacer
 
 		start := time.Now()
 
-		req, _ := http.NewRequest(method, url, nil)
+		req, err := http.NewRequest(method, url, bytes.NewBufferString(body))
+		if err != nil {
+			results <- Result{Latency: 0, Success: false}
+			continue
+		}
+		for key, values := range headers {
+			for _, value := range values {
+				req.Header.Add(key, value)
+			}
+		}
 		resp, err := client.Do(req)
 
 		latency := time.Since(start)
