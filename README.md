@@ -57,6 +57,15 @@ cd loadster-go
 go build -o loadster .
 ```
 
+## Binary Downloads
+
+Prebuilt binaries are available on the GitHub Releases page:
+
+- https://github.com/dinesh-kumar90/loadster-go/releases
+
+Download the asset matching your OS/architecture and run it directly.
+Releases are built automatically by GitHub Actions when you push a tag like `v1.0.0`.
+
 ## Usage
 
 ```bash
@@ -143,6 +152,30 @@ Latency:
 - Status-code distribution reporting
 - JSON/CSV output mode
 - Distributed load generation mode
+
+## Create Release Binaries
+
+Use the included script to build multi-OS binaries and checksums:
+
+```bash
+./scripts/release.sh v1.0.0
+```
+
+Or use CI/CD: push a version tag and GitHub Actions will build and attach all binaries automatically:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+This generates artifacts in `dist/`:
+- `loadster-v1.0.0-linux-amd64`
+- `loadster-v1.0.0-linux-arm64`
+- `loadster-v1.0.0-darwin-amd64`
+- `loadster-v1.0.0-darwin-arm64`
+- `loadster-v1.0.0-windows-amd64.exe`
+- `loadster-v1.0.0-windows-arm64.exe`
+- `checksums.txt`
 
 ## License
 
